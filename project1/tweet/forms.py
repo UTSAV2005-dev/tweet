@@ -1,11 +1,16 @@
 from django import forms
-from .models import Tweet,Comment,Profile
+from .models import Tweet,Comment,Profile, review
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User 
 class TweetForm(forms.ModelForm):
     class Meta:
         model = Tweet
         fields = ['text', 'photo']
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = review
+        fields = ['rating', 'comment']
 
 
 class UserRegistrationForm(UserCreationForm):

@@ -54,6 +54,16 @@ class Profile(models.Model):
     def posts_count(self):
         # use related_name "tweets" instead of default "tweet_set"
         return self.user.tweets.count()
+    
+
+class review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    comment = models.TextField(max_length=500)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Review by {self.user.username} - Rating: {self.rating}'
 
 
 

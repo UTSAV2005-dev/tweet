@@ -1,7 +1,7 @@
 
 from django.shortcuts import render,redirect
-from .models import Profile, Tweet ,Comment
-from .forms import CommentForm, TweetForm,UserRegistrationForm,ProfileEditForm
+from .models import Profile, Tweet ,Comment, review
+from .forms import CommentForm, TweetForm,UserRegistrationForm,ProfileEditForm,ReviewForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
@@ -23,6 +23,27 @@ def tweet_list(request):
 
 def about(request):
     return render(request, 'about.html')
+
+
+
+@login_required
+def add_review(request):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.save()
+            return redirect('reviews')
+    else:
+        form = ReviewForm()
+    return render(request, 'add_review.html', {'form': form})
+
+
+@login_required
+def reviews(request):
+    reviews = review.objects.all().order_by('-created_at')
+    return render(request, 'reviews.html', {'reviews': reviews})
 
 
 
